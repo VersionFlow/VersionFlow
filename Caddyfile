@@ -1,0 +1,14 @@
+http://versionflow.localhost {
+	reverse_proxy web:5173
+}
+
+http://api.versionflow.localhost {
+    reverse_proxy api:3000
+}
+
+http://studio.versionflow.localhost {
+	handle {
+		redir https://local.drizzle.studio?port=5000 permanent
+	}
+}
+
