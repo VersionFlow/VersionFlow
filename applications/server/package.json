@@ -1,0 +1,30 @@
+{
+	"name": "@applications/server",
+	"description": "The entry point to our application, where the client will access via HTTP",
+	"version": "1.0.0",
+	"type": "module",
+	"scripts": {
+		"type:check": "tsc --project ./tsconfig.json",
+		"start": "pnpm type:check && tsx ./src/index.ts",
+		"dev": "tsx watch ./src/index.ts",
+		"gen:types:config": "json2ts --additionalProperties false -i schemas/config/config-type.yaml -o src/types/config.ts"
+	},
+	"packageManager": "pnpm@9.13.0",
+	"dependencies": {
+		"@hono/node-server": "^1.13.7",
+		"@packages/config": "workspace:*",
+		"@packages/contracts": "workspace:*",
+		"hono": "^4.6.15",
+		"moleculer": "^0.14.35"
+	},
+	"devDependencies": {
+		"@types/node": "^22.10.2",
+		"@types/pg": "^8.11.10",
+		"drizzle-kit": "^0.30.1",
+		"drizzle-orm": "^0.38.3",
+		"json-schema-to-typescript": "^15.0.3",
+		"pg": "^8.13.1",
+		"tsx": "^4.19.2",
+		"typescript": "^5.7.2"
+	}
+}

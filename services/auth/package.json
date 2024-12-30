@@ -1,0 +1,24 @@
+{
+	"name": "@services/auth",
+	"description": "Authorization microservice",
+	"version": "1.0.0",
+	"type": "module",
+	"scripts": {
+		"type:check": "tsc --project ./tsconfig.json",
+		"start": "pnpm type:check && tsx ./src/index.ts",
+		"dev": "tsx watch ./src/index.ts",
+		"gen:types:config": "json2ts --additionalProperties false -i schemas/config/config-type.yaml -o src/types/config.ts"
+	},
+	"devDependencies": {
+		"@types/node": "^22.10.2",
+		"tsx": "^4.19.2",
+		"typescript": "^5.7.2"
+	},
+	"dependencies": {
+		"@packages/config": "workspace:*",
+		"@packages/contracts": "workspace:*",
+		"amqplib": "^0.10.5",
+		"json-schema-to-typescript": "^15.0.3",
+		"moleculer": "^0.14.35"
+	}
+}

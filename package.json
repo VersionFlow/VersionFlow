@@ -1,0 +1,17 @@
+{
+	"name": "versionflow",
+	"description": "???",
+	"packageManager": "pnpm@9.15.2",
+	"scripts": {
+		"format": "biome format . --write",
+		"lint": "biome lint . --write",
+		"build": "pnpm --recursive --stream build",
+		"dev": "pnpm --recursive --stream --parallel dev",
+		"prepare": "husky",
+		"gen:types:config": "pnpm --recursive --stream gen:types:config"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "^1.9.4",
+		"husky": "^9.1.7"
+	}
+}

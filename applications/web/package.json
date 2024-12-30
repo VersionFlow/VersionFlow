@@ -1,0 +1,39 @@
+{
+	"name": "@applications/web",
+	"description": "The web client of the application",
+	"version": "1.0.0",
+	"type": "module",
+	"scripts": {
+		"dev": "vite dev --host",
+		"build": "vite build",
+		"preview": "vite preview --host",
+		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
+		"test:unit": "vitest",
+		"test": "npm run test:unit -- --run",
+		"lint": "eslint . && prettier --check .",
+		"format": "prettier --write ."
+	},
+	"devDependencies": {
+		"@eslint/compat": "^1.2.4",
+		"@eslint/js": "^9.17.0",
+		"@sveltejs/adapter-node": "^5.2.11",
+		"@sveltejs/kit": "^2.15.1",
+		"@sveltejs/vite-plugin-svelte": "^5.0.3",
+		"@types/eslint-config-prettier": "^6.11.3",
+		"autoprefixer": "^10.4.20",
+		"eslint": "^9.17.0",
+		"eslint-config-prettier": "^9.1.0",
+		"eslint-plugin-svelte": "^2.46.1",
+		"globals": "^15.14.0",
+		"prettier": "^3.4.2",
+		"prettier-plugin-svelte": "^3.3.2",
+		"svelte": "^5.16.0",
+		"svelte-check": "^4.1.1",
+		"tailwindcss": "^3.4.17",
+		"typescript": "^5.7.2",
+		"typescript-eslint": "^8.18.2",
+		"vite": "^6.0.6",
+		"vitest": "^2.1.8"
+	}
+}

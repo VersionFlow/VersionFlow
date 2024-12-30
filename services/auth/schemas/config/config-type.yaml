@@ -1,0 +1,13 @@
+type: object
+properties:
+  rabbit:
+    type: object
+    properties:
+      url:
+        type: string
+        format: uri
+        pattern: "^amqp://.*$"
+    required:
+      - url
+required:
+  - rabbit

@@ -1,0 +1,92 @@
+services:
+  api:
+    build:
+      dockerfile: ./server.Dockerfile
+    cpus: 12
+    container_name: versionflow_server
+    depends_on:
+      db:
+        condition: service_started
+        restart: true
+    environment:
+      PORT: 3000
+      JWT_SECRET: askjldfjaskldjasl
+      
+      SECURE_FAITH: ac9128c7ff85720dfb9a90b75ffbc5ea9dc1ff0d6be2c8d59e11e84d01c254a4
+      SECURE_VECTOR: 53ae0ec45a25e8c0
+
+      DRIVER: postgres
+      DATABASE_URL: postgres://admin:password@db:5432/versionflow
+    volumes: 
+      - ./applications/server:/app/applications/server
+      - ./secrets:/app/secrets
+      - ./schemas/:/app/schemas
+
+      - ./services/auth/src:/app/services/auth/src
+
+      - ./packages/config/src/:/app/packages/config/src
+      - ./packages/secure/src/:/app/packages/secure/src
+      - ./packages/contracts/src/:/app/packages/contracts/src
+
+  web:
+    build: ./applications/web
+    container_name: versionflow_web
+    volumes:
+      - ./applications/web/src:/app/src
+
+  db:
+    container_name: versionflow_postgres
+    image: postgres:17.2-alpine
+    shm_size: 128mb
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: versionflow
+    logging:
+      driver: none
+    volumes:
+      - ./.docker-data/postgres:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+
+  drizzle_studio:
+    container_name: versionflow_studio
+    build: 
+      context: ./applications/server/
+      dockerfile: drizzle.Dockerfile
+    environment:
+      DATABASE_URL: postgres://admin:password@db:5432/versionflow
+    ports:
+      - 5000:5000
+    depends_on:
+      db:
+        condition: service_started
+        restart: true
+
+  rabbit:
+    container_name: versionflow_rabbit
+    image: rabbitmq:4.0.5-alpine
+    ports:
+      - 5672:5672
+      - 15672:15672
+    volumes:
+      - ./.docker-data/rabbitmq/data/:/var/lib/rabbitmq/
+      - ./.docker-data/rabbitmq/log/:/var/log/rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+
+  
+  caddy:
+    container_name: versionflow_caddy
+    image: caddy:2.8.4-alpine
+    logging:
+      driver: none
+    cap_add:
+      - NET_ADMIN
+    ports:
+      - 80:80
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - ./.docker-data/caddy:/data
+
