@@ -1,6 +1,9 @@
 services:
   api:
-    build: ./server
+    build:
+      dockerfile: ./server.Dockerfile
+    cpus: 12
+    container_name: versionflow_server
     depends_on:
       db:
         condition: service_started
@@ -10,16 +13,25 @@ services:
       JWT_SECRET: askjldfjaskldjasl
       DRIVER: postgres
       DATABASE_URL: postgres://admin:password@db:5432/versionflow
-
     volumes: 
-      - ./server:/app
+      - ./applications/server:/app/applications/server
+      - ./secrets:/app/secrets
+      - ./schemas/:/app/schemas
+
+      - ./services/auth/src:/app/services/auth/src
+
+      - ./packages/config/src/:/app/packages/config/src
+      - ./packages/secure/src/:/app/packages/secure/src
+      - ./packages/contracts/src/:/app/packages/contracts/src
 
   web:
-    build: ./web
+    build: ./applications/web
+    container_name: versionflow_web
     volumes:
-      - ./web:/app
+      - ./applications/web/src:/app/src
 
   db:
+    container_name: versionflow_postgres
     image: postgres:17.2-alpine
     shm_size: 128mb
     environment:
@@ -34,8 +46,9 @@ services:
       - 5432:5432
 
   drizzle_studio:
+    container_name: versionflow_studio
     build: 
-      context: ./server
+      context: ./applications/server/
       dockerfile: drizzle.Dockerfile
     environment:
       DATABASE_URL: postgres://admin:password@db:5432/versionflow
@@ -45,11 +58,23 @@ services:
       db:
         condition: service_started
         restart: true
-    volumes: 
-      - ./server:/app
+
+  rabbit:
+    container_name: versionflow_rabbit
+    image: rabbitmq:4.0.5-alpine
+    ports:
+      - 5672:5672
+      - 15672:15672
+    volumes:
+      - ./.docker-data/rabbitmq/data/:/var/lib/rabbitmq/
+      - ./.docker-data/rabbitmq/log/:/var/log/rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
 
   
   caddy:
+    container_name: versionflow_caddy
     image: caddy:2.8.4-alpine
     logging:
       driver: none

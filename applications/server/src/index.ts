@@ -7,12 +7,11 @@ import { Hono } from 'hono'
 
 const broker = new ServiceBroker({
 	transporter: process.env.RABBIT_MQ_URL as string,
+	logger: null,
 })
 
 const app = new Hono()
 const config = new Config<ConfigType>(CONFIG_OPTIONS).load()
-
-await broker.start()
 
 app.post('/auth/signup', async () => {
 	const data = { email: '', password: '' }
@@ -22,9 +21,11 @@ app.post('/auth/signup', async () => {
 serve(
 	{
 		fetch: app.fetch,
+		hostname: '0.0.0.0',
 		port: config.http.port,
 	},
-	() => {
+	async () => {
 		console.log(`The server started successfully on port ${config.http.port}`)
+		await broker.start()
 	}
 )

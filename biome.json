@@ -34,7 +34,8 @@
 			"applications/web",
 			"services/**/pnpm-lock.yaml",
 			"services/**/node_modules",
-			"services/**/dist"
+			"services/**/dist",
+			".docker-data"
 		]
 	}
 }

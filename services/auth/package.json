@@ -6,7 +6,7 @@
 	"scripts": {
 		"type:check": "tsc --project ./tsconfig.json",
 		"start": "pnpm type:check && tsx ./src/index.ts",
-		"dev": "pnpm type:check && tsx watch ./src/index.ts",
+		"dev": "tsx watch ./src/index.ts",
 		"gen:types:config": "json2ts --additionalProperties false -i schemas/config/config-type.yaml -o src/types/config.ts"
 	},
 	"devDependencies": {

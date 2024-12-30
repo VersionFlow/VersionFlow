@@ -6,6 +6,7 @@
 		"format": "biome format . --write",
 		"lint": "biome lint . --write",
 		"build": "pnpm --recursive --stream build",
+		"dev": "pnpm --recursive --stream --parallel dev",
 		"prepare": "husky",
 		"gen:types:config": "pnpm --recursive --stream gen:types:config"
 	},

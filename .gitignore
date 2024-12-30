@@ -2,3 +2,4 @@ node_modules
 .docker-data
 .idea
 secrets
+!secrets/*.example.yml
