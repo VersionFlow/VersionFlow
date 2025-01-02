@@ -5,13 +5,14 @@ import { ServiceBroker } from 'moleculer'
 import { Config } from '@packages/config'
 import { Hono } from 'hono'
 
+const config = new Config<ConfigType>(CONFIG_OPTIONS).load()
+
 const broker = new ServiceBroker({
-	transporter: process.env.RABBIT_MQ_URL as string,
+	transporter: config.rabbit.url,
 	logger: null,
 })
 
 const app = new Hono()
-const config = new Config<ConfigType>(CONFIG_OPTIONS).load()
 
 app.post('/auth/signup', async () => {
 	const data = { email: '', password: '' }
